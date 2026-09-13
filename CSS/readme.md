@@ -27,4 +27,4 @@ overflow : scroll , hidden , auto, ellipses
 1. static , absolute(ye apne nearest positioned anscester se ye apne ko set krega) , relative(ye apne previous position ke respect me change hoga) , fixed , sticky 
 
 ### @media querry
-max-with or min-with
+max-with or min-with used to make responsive website
