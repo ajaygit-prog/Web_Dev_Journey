@@ -24,7 +24,7 @@ app.delete('/notes/:index', (req,res) =>{
     const idx = req.params.index ;
     delete note[idx] ;
     res.status(200).json({
-        message : "deleted successfully"
+        message : "deleted successfully done ..."
     })
 })
 
