@@ -1,44 +1,42 @@
 import express from 'express'
-
-
-import nooteModel from './models/note.model'
+import {noteModel} from './models/note.model.js'
 
 const app = express() // creating server instance
 app.use(express.json()) // middelwear
+app.post('/notes',async(req,res)=>{
+    const data = req.body
+    noteModel.create({
+    title : data.title ,
+    description : data.description 
+    })
 
-const note = [] ;
-app.post('/notes',(req,res)=>{
-    note.push(req.body)
     res.status(201).json({message :"note added successfully"}) ;
 })
 
-
-app.get('/notes' , (req,res)=>{
+app.get("/notes", async (req, res) => {
+  
+    const note  = await noteModel.find() ; // find method return an array and all the notes whatever written in database all note will stored in notes
+    // similarly noteModel.findOne({title:"abc"}) then it will return only that node whose title is abc  return single object only .
+  res.status(201).json({ message: "note added successfully",notes : note });
+});
+app.delete("/notes/:id",async(req,res)=>{
+    const id = req.params.id
+    await noteModel.findOneAndDelete({
+        _id : id
+    })
     res.status(200).json({
-        message : " Notes fetched successfully" ,
-        note : note
+        message:"notes deleted successfully"
     })
 })
-//'/notes/:index' : (colon is used to tell express that after this all are dynamic in nature)
-app.delete('/notes/:index', (req,res) =>{
-    const idx = req.params.index ;
-    delete note[idx] ;
+app.patch("/notes/:id", async(req,res) =>{
+    const id = req.params.id ;
+    const description = req.body.description
+    await noteModel.findOneAndUpdate({_id : id} , {description : description})
     res.status(200).json({
-        message : "deleted successfully done ..."
+        message:"updated successfully "
     })
+
 })
-
-
-app.patch('/notes/:index',(req,res)=>{
-    const idx = req.params.index ;
-    const description = req.body.Description ;
-
-    note[idx].Description = description ;
-    res.status(200).json({
-        message : "updated successfully "
-    })
-})
-
 
 export {app} ;
 
